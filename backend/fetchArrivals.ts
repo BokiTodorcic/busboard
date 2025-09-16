@@ -1,5 +1,5 @@
 import axios from "axios";
-import { type BusArrivalInformation } from "../src/types";
+import { type BusArrivalInformation, type Position } from "../src/types";
 
 const api_key: string | undefined = import.meta.env.API_KEY;
 
@@ -20,6 +20,27 @@ export async function getLatestArrivals(busStopID: FormDataEntryValue) {
     return [];
   }
 }
+
+export async function getLongLat(postcode: FormDataEntryValue = "BR87RE") {
+  try {
+    const response = await axios.get(
+      `https://api.postcodes.io/postcodes/${postcode}`
+    );
+    
+    const position: Position = {
+      latitude: response.data.result.latitude,
+      longitude: response.data.result.longitude
+    }
+    console.log(position);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+// async function getListOfNearestStops(position: Position) {
+
+// }
 
 function parseBusData(data: BusArrivalInformation[]) {
   const allParesedBusses: BusArrivalInformation[] = [];

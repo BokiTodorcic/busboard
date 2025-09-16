@@ -4,3 +4,8 @@ export type BusArrivalInformation = {
   timeToStation: number;
   arrivalTime?: number;
 };
+
+export type Position = {
+  latitude: number,
+  longitude: number
+}
