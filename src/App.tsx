@@ -25,6 +25,7 @@ function App() {
         BusBoard
       </h1>
       <form action={handleSearch}>
+        // Value is currently hard 
         <textarea
           name="busStopID"
           id="busStopID"
@@ -43,9 +44,9 @@ function App() {
           {latestArrivalsData?.map((bus, index) => {
             return (
               <tr key={index}>
-                <td>{bus.route}</td>
-                <td>{bus.destination}</td>
-                <td>{bus.arrivalTime}</td>
+                <td>{bus.lineName}</td>
+                <td>{bus.destinationName}</td>
+                <td>{bus.timeToStation}</td>
               </tr>
             );
           })}

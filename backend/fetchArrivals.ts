@@ -1,11 +1,9 @@
 import axios from "axios";
 import {
   type BusArrivalInformation,
-  type BusArrivalRawData,
 } from "../src/types";
 
 const api_key: string | undefined = import.meta.env.API_KEY;
-// const stopID: string = "490008660N";
 
 export async function getLatestArrivals(busStopID: string) {
   try {
@@ -21,13 +19,14 @@ export async function getLatestArrivals(busStopID: string) {
   }
 }
 
-function parseBusData(data: BusArrivalRawData[]) {
+function parseBusData(data: BusArrivalInformation[]) {
   const allParesedBusses: BusArrivalInformation[] = [];
-  data.map((bus: BusArrivalRawData) => {
+  data.map((bus: BusArrivalInformation) => {
+    const arrivalInMins: number = Math.floor(bus.timeToStation / 60)
     const busInformation: BusArrivalInformation = {
-      route: bus.lineName,
-      destination: bus.destinationName,
-      arrivalTime: bus.expectedArrival,
+      lineName: bus.lineName,
+      destinationName: bus.destinationName,
+      timeToStation: arrivalInMins
     };
     allParesedBusses.push(busInformation);
   });
