@@ -7,15 +7,18 @@ function App() {
     BusArrivalInformation[] | null
   >();
 
-  function handleSearch(searchData: any): void {
-    const query: string = searchData.get("busStopID");
-    handleLatestArrivals(query);
+  function handleSearch(searchData: FormData): void {
+    const query: FormDataEntryValue | null = searchData.get("busStopID");
+    if (query) {
+      handleLatestArrivals(query);
+    } else {
+      console.log("No bus stop entered");
+    }
   }
 
-  async function handleLatestArrivals(stopID: string) {
+  async function handleLatestArrivals(stopID: FormDataEntryValue) {
     const busStopData: BusArrivalInformation[] | string =
       await getLatestArrivals(stopID);
-    console.log(busStopData);
     setlatestArrivalsData(busStopData);
   }
 
@@ -25,7 +28,7 @@ function App() {
         BusBoard
       </h1>
       <form action={handleSearch}>
-        // Value is currently hard 
+        {/* Currently the bus ID is hard coded for testing the API*/}
         <textarea
           name="busStopID"
           id="busStopID"
