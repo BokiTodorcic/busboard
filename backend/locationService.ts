@@ -15,12 +15,13 @@ export async function handlePostcodeRequest(postcode: string) {
     orderBusStopData(allLocalBusStops);
   const closestLocalBusStops: LocalBusStopInformation[] =
     limitClosesBusStops(orderedLocalBusStops);
+
   const closestArrivals: BusArrivalInformation[] = []
   Promise.allSettled(closestLocalBusStops.map(async (busStop) => {
     const arrivals = await handleLatestArrivalsRequest(busStop.naptanId)
     closestArrivals.push(...arrivals)
   }))
-  console.log(closestArrivals);
+  return closestArrivals;
 }
 
 function orderBusStopData(localBusStops: LocalBusStopInformation[]) {

@@ -2,8 +2,9 @@ export type BusArrivalInformation = {
   lineName: string;
   destinationName: string;
   timeToStation: number;
-  naptanId?: string;
+  naptanId: string;
   arrivalTime?: number;
+  stationName:string;
 };
 
 export type Position = {

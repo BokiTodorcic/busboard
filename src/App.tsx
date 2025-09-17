@@ -8,7 +8,7 @@ function App() {
     BusArrivalInformation[] | null
   >(null);
 
-  function handleSearch(searchData: FormData): void {
+  async function handleSearch(searchData: FormData): Promise<void> {
     const query: FormDataEntryValue | null = searchData.get("busStopID");
     if (typeof query === "string") {
       const busStopRegex = /[a-z0-9]{9,}/i;
@@ -16,9 +16,9 @@ function App() {
       const isValidBusStop: boolean = busStopRegex.test(query);
       const isValidPostCode: boolean = postcodeRegex.test(query);
       if (isValidBusStop) {
-        handleLatestArrivals(query);
+        await handleLatestArrivals(query);
       } else if (isValidPostCode) {
-        handlePostcodeRequest(query);
+        await handleArrivalsFromPostcode(query);
       } else {
         alert(
           "Attention: Please enter a valid Bus Stop ID or Postcode into the input field."
@@ -29,11 +29,21 @@ function App() {
     }
   }
 
+  async function handleArrivalsFromPostcode(postcode: string): Promise<void> {
+    const busStopData: BusArrivalInformation[] =
+      await handlePostcodeRequest(postcode);
+      setlatestArrivalsData(busStopData);
+      console.log(busStopData);
+  }
   async function handleLatestArrivals(stopID: string): Promise<void> {
     const busStopData: BusArrivalInformation[] =
       await handleLatestArrivalsRequest(stopID);
     setlatestArrivalsData(busStopData);
+      console.log(busStopData);
+
   }
+
+
 
   return (
     <>
@@ -46,7 +56,7 @@ function App() {
           type="text"
           name="busStopID"
           id="busStopID"
-          // placeholder={"Bus Stop ID"}
+          placeholder={"Bus Stop ID:"}
           // defaultValue="490008660N"
         ></input>
         <button type="submit">Search</button>
@@ -54,6 +64,7 @@ function App() {
       <div>
         <table>
           <tr>
+            <th>Bus Stop Name</th>
             <th>Bus Number</th>
             <th>Destination</th>
             <th>Arrival Time</th>
@@ -61,9 +72,10 @@ function App() {
           {latestArrivalsData?.map((bus, index) => {
             return (
               <tr key={index}>
+                <td>{bus.stationName}</td>
                 <td>{bus.lineName}</td>
                 <td>{bus.destinationName}</td>
-                <td>{bus.timeToStation}</td>
+                <td>{bus.timeToStation} mins</td>
               </tr>
             );
           })}
