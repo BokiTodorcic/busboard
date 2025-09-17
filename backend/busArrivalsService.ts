@@ -18,6 +18,7 @@ function parseBusData(data: BusArrivalInformation[]) {
       lineName: bus.lineName,
       destinationName: bus.destinationName,
       timeToStation: arrivalInMins,
+      // naptanId: bus.naptanId,
     };
     allParesedBusses.push(busInformation);
   });

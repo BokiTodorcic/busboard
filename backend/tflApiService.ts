@@ -15,3 +15,18 @@ export async function getLatestArrivals(busStopID: string) {
     return [];
   }
 }
+
+export async function getBusStopsWithinRadius(
+  latitude: number,
+  longitude: number
+) {
+  try {
+    const response = await axios.get(
+      `https://api.tfl.gov.uk/StopPoint/?lat=${latitude.toString()}&lon=${longitude.toString()}&stopTypes=NaptanPublicBusCoachTram&modes=bus`
+    );
+    const busStops = response.data.stopPoints;
+    return busStops
+  } catch (error) {
+    console.error(error)
+  }
+}
