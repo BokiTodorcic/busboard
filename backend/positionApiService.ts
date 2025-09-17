@@ -9,6 +9,6 @@ export async function getLongLatData(postcode: string): Promise<Position> {
     console.log(response.data.result);
     return response.data.result;
   } catch (error) {
-    console.error(error);
+    throw new Error((error as Error).message);
   }
 }
