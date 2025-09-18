@@ -20,7 +20,7 @@ export async function handleLatestArrivalsRequest(
   return stationArrivals;
 }
 
-function parseBusData(data: BusArrivalInformation[]) {
+function parseBusData(data: BusArrivalInformation[]): BusArrivalInformation[] {
   const allParsedBuses: BusArrivalInformation[] = [];
   data.map((bus: BusArrivalInformation) => {
     const arrivalInMins: number = Math.ceil(bus.timeToStation / 60);
@@ -36,13 +36,17 @@ function parseBusData(data: BusArrivalInformation[]) {
   return allParsedBuses;
 }
 
-function orderBusData(arrivalData: BusArrivalInformation[]) {
+function orderBusData(
+  arrivalData: BusArrivalInformation[]
+): BusArrivalInformation[] {
   return [...arrivalData].sort((a, b) =>
     a.timeToStation < b.timeToStation ? -1 : 1
   );
 }
 
-function showFirstBuses(arrivalData: BusArrivalInformation[]) {
+function showFirstBuses(
+  arrivalData: BusArrivalInformation[]
+): BusArrivalInformation[] {
   const arrivalLimit: number = 5;
   return arrivalData.slice(0, arrivalLimit);
 }

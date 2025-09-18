@@ -32,13 +32,13 @@ export async function handlePostcodeRequest(
   return networkArrivals;
 }
 
-function orderBusStopData(localBusStops: LocalBusStopInformation[]) {
+function orderBusStopData(localBusStops: LocalBusStopInformation[]): LocalBusStopInformation[] {
   return [...localBusStops].sort((a, b) => (a.distance < b.distance ? -1 : 1));
 }
 
 function limitClosestBusStops(
   arrivalData: LocalBusStopInformation[],
   arrivalLimit: number = 2
-) {
+): LocalBusStopInformation[] {
   return arrivalData.slice(0, arrivalLimit);
 }
