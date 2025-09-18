@@ -13,7 +13,7 @@ function App() {
     const query: FormDataEntryValue | null = searchData.get("busstopId");
     if (typeof query === "string") {
       const busStopRegex = /[a-z0-9]{9,}/i;
-      const postcodeRegex = /[A-Z]{1,2}[0-9]{1,2}\s?\d[A-Z]{2}/;
+      const postcodeRegex = /[A-Z]{1,2}[0-9]{1,2}\s?\d[A-Z]{2}/i;
 
       const isValidBusStop: boolean = busStopRegex.test(query);
       const isValidPostCode: boolean = postcodeRegex.test(query);
