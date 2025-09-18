@@ -4,15 +4,13 @@ import { handlePostcodeRequest } from "../backend/locationService";
 import type { StationInformation } from "./types";
 import ArrivalsTable from "./Table";
 
-
-
 function App() {
   const [stationInformation, setStationInformation] = useState<
     StationInformation[]
   >([]);
 
   async function handleSearch(searchData: FormData): Promise<void> {
-    const query: FormDataEntryValue | null = searchData.get("busStopID");
+    const query: FormDataEntryValue | null = searchData.get("busstopId");
     if (typeof query === "string") {
       const busStopRegex = /[a-z0-9]{9,}/i;
       const postcodeRegex = /[A-Z]{1,2}[0-9]{1,2}\s?\d[A-Z]{2}/;
@@ -41,9 +39,9 @@ function App() {
     setStationInformation(busStopData);
   }
 
-  async function handleLatestArrivals(stopID: string): Promise<void> {
+  async function handleLatestArrivals(stopId: string): Promise<void> {
     const busStopData: StationInformation = await handleLatestArrivalsRequest(
-      stopID
+      stopId
     );
     setStationInformation([busStopData]);
   }
@@ -56,8 +54,8 @@ function App() {
       <form action={handleSearch}>
         <input
           type="text"
-          name="busStopID"
-          id="busStopID"
+          name="busstopId"
+          id="busstopId"
           placeholder={"Bus Stop ID:"}
         ></input>
         <button type="submit">Search</button>

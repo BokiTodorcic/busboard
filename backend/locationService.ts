@@ -21,7 +21,7 @@ export async function handlePostcodeRequest(
   const orderedLocalBusStops: LocalBusStopInformation[] =
     orderBusStopData(allLocalBusStops);
   const closestLocalBusStops: LocalBusStopInformation[] =
-    limitClosesBusStops(orderedLocalBusStops);
+    limitClosestBusStops(orderedLocalBusStops);
 
   const networkArrivals: StationInformation[] = await Promise.all(
     closestLocalBusStops.map(async (busStop) => {
@@ -36,7 +36,7 @@ function orderBusStopData(localBusStops: LocalBusStopInformation[]) {
   return [...localBusStops].sort((a, b) => (a.distance < b.distance ? -1 : 1));
 }
 
-function limitClosesBusStops(
+function limitClosestBusStops(
   arrivalData: LocalBusStopInformation[],
   arrivalLimit: number = 2
 ) {

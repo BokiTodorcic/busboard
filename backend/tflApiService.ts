@@ -3,10 +3,10 @@ import { type BusArrivalInformation } from "../src/types";
 
 const api_key: string | undefined = import.meta.env.VITE_API_KEY;
 
-export async function getLatestArrivals(busStopID: string) {
+export async function getLatestArrivals(busstopId: string) {
   try {
     const response = await axios.get(
-      `https://api.tfl.gov.uk/StopPoint/${busStopID}/Arrivals?app_key=${api_key}`
+      `https://api.tfl.gov.uk/StopPoint/${busstopId}/Arrivals?app_key=${api_key}`
     );
     const allArrivals: BusArrivalInformation[] = response.data;
     return allArrivals;

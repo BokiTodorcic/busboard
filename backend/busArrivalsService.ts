@@ -1,17 +1,19 @@
 import type { BusArrivalInformation, StationInformation } from "../src/types";
 import { getLatestArrivals } from "./tflApiService";
 
-export async function handleLatestArrivalsRequest(stopID: string): Promise<StationInformation> {
+export async function handleLatestArrivalsRequest(
+  stopId: string
+): Promise<StationInformation> {
   const stationArrivals: StationInformation = {
     stationName: "",
     arrivalsInfo: [],
   };
 
-  const arrivalsData: BusArrivalInformation[] = await getLatestArrivals(stopID);
+  const arrivalsData: BusArrivalInformation[] = await getLatestArrivals(stopId);
   const parsedArrivals: BusArrivalInformation[] = parseBusData(arrivalsData);
   const orderedArrivals: BusArrivalInformation[] = orderBusData(parsedArrivals);
   const latestArrivals: BusArrivalInformation[] =
-    showFirstBusses(orderedArrivals);
+    showFirstBuses(orderedArrivals);
 
   stationArrivals.stationName = latestArrivals[0].stationName;
   stationArrivals.arrivalsInfo = latestArrivals;
@@ -19,7 +21,7 @@ export async function handleLatestArrivalsRequest(stopID: string): Promise<Stati
 }
 
 function parseBusData(data: BusArrivalInformation[]) {
-  const allParesedBusses: BusArrivalInformation[] = [];
+  const allParsedBuses: BusArrivalInformation[] = [];
   data.map((bus: BusArrivalInformation) => {
     const arrivalInMins: number = Math.ceil(bus.timeToStation / 60);
     const busInformation: BusArrivalInformation = {
@@ -29,9 +31,9 @@ function parseBusData(data: BusArrivalInformation[]) {
       naptanId: bus.naptanId,
       stationName: bus.stationName,
     };
-    allParesedBusses.push(busInformation);
+    allParsedBuses.push(busInformation);
   });
-  return allParesedBusses;
+  return allParsedBuses;
 }
 
 function orderBusData(arrivalData: BusArrivalInformation[]) {
@@ -40,7 +42,7 @@ function orderBusData(arrivalData: BusArrivalInformation[]) {
   );
 }
 
-function showFirstBusses(arrivalData: BusArrivalInformation[]) {
+function showFirstBuses(arrivalData: BusArrivalInformation[]) {
   const arrivalLimit: number = 5;
   return arrivalData.slice(0, arrivalLimit);
 }
