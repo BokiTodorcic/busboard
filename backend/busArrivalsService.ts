@@ -1,13 +1,21 @@
-import { type BusArrivalInformation } from "../src/types";
+import type { BusArrivalInformation, StationInformation } from "../src/types";
 import { getLatestArrivals } from "./tflApiService";
 
-export async function handleLatestArrivalsRequest(stopID: string) {
+export async function handleLatestArrivalsRequest(stopID: string): Promise<StationInformation> {
+  const stationArrivals: StationInformation = {
+    stationName: "",
+    arrivalsInfo: [],
+  };
+
   const arrivalsData: BusArrivalInformation[] = await getLatestArrivals(stopID);
   const parsedArrivals: BusArrivalInformation[] = parseBusData(arrivalsData);
   const orderedArrivals: BusArrivalInformation[] = orderBusData(parsedArrivals);
   const latestArrivals: BusArrivalInformation[] =
     showFirstBusses(orderedArrivals);
-  return latestArrivals;
+
+  stationArrivals.stationName = latestArrivals[0].stationName;
+  stationArrivals.arrivalsInfo = latestArrivals;
+  return stationArrivals;
 }
 
 function parseBusData(data: BusArrivalInformation[]) {

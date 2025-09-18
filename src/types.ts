@@ -4,7 +4,12 @@ export type BusArrivalInformation = {
   timeToStation: number;
   naptanId: string;
   arrivalTime?: number;
-  stationName:string;
+  stationName: string;
+};
+
+export type StationInformation = {
+  stationName: string;
+  arrivalsInfo: BusArrivalInformation[];
 };
 
 export type Position = {
@@ -15,4 +20,9 @@ export type Position = {
 export type LocalBusStopInformation = {
   distance: number;
   naptanId: string;
+};
+
+export type ArrivalsTableProps = {
+  stationInfo: StationInformation;
+  key: number;
 };

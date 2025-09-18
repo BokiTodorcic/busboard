@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { handleLatestArrivalsRequest } from "../backend/busArrivalsService";
 import { handlePostcodeRequest } from "../backend/locationService";
-import type { BusArrivalInformation } from "./types";
+import type { StationInformation } from "./types";
+import ArrivalsTable from "./Table";
+
+
 
 function App() {
-  const [latestArrivalsData, setlatestArrivalsData] = useState<
-    BusArrivalInformation[] | null
-  >(null);
+  const [stationInformation, setStationInformation] = useState<
+    StationInformation[]
+  >([]);
 
   async function handleSearch(searchData: FormData): Promise<void> {
     const query: FormDataEntryValue | null = searchData.get("busStopID");
     if (typeof query === "string") {
       const busStopRegex = /[a-z0-9]{9,}/i;
       const postcodeRegex = /[A-Z]{1,2}[0-9]{1,2}\s?\d[A-Z]{2}/;
+
       const isValidBusStop: boolean = busStopRegex.test(query);
       const isValidPostCode: boolean = postcodeRegex.test(query);
+
       if (isValidBusStop) {
         await handleLatestArrivals(query);
       } else if (isValidPostCode) {
@@ -30,20 +35,18 @@ function App() {
   }
 
   async function handleArrivalsFromPostcode(postcode: string): Promise<void> {
-    const busStopData: BusArrivalInformation[] =
-      await handlePostcodeRequest(postcode);
-      setlatestArrivalsData(busStopData);
-      console.log(busStopData);
+    const busStopData: StationInformation[] = await handlePostcodeRequest(
+      postcode
+    );
+    setStationInformation(busStopData);
   }
+
   async function handleLatestArrivals(stopID: string): Promise<void> {
-    const busStopData: BusArrivalInformation[] =
-      await handleLatestArrivalsRequest(stopID);
-    setlatestArrivalsData(busStopData);
-      console.log(busStopData);
-
+    const busStopData: StationInformation = await handleLatestArrivalsRequest(
+      stopID
+    );
+    setStationInformation([busStopData]);
   }
-
-
 
   return (
     <>
@@ -51,35 +54,20 @@ function App() {
         BusBoard
       </h1>
       <form action={handleSearch}>
-        {/* Currently the bus ID is hard coded for testing the API*/}
         <input
           type="text"
           name="busStopID"
           id="busStopID"
           placeholder={"Bus Stop ID:"}
-          // defaultValue="490008660N"
         ></input>
         <button type="submit">Search</button>
       </form>
       <div>
-        <table>
-          <tr>
-            <th>Bus Stop Name</th>
-            <th>Bus Number</th>
-            <th>Destination</th>
-            <th>Arrival Time</th>
-          </tr>
-          {latestArrivalsData?.map((bus, index) => {
-            return (
-              <tr key={index}>
-                <td>{bus.stationName}</td>
-                <td>{bus.lineName}</td>
-                <td>{bus.destinationName}</td>
-                <td>{bus.timeToStation} mins</td>
-              </tr>
-            );
-          })}
-        </table>
+        {stationInformation.map((station, index: number) => {
+          return (
+            <ArrivalsTable key={index} stationInfo={station}></ArrivalsTable>
+          );
+        })}
       </div>
     </>
   );
