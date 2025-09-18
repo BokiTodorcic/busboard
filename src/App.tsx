@@ -36,7 +36,11 @@ function App() {
     const busStopData: StationInformation[] = await handlePostcodeRequest(
       postcode
     );
-    setStationInformation(busStopData);
+    if (busStopData.length === 0) {
+      alert("No stations available for that postcode.");
+    } else {
+      setStationInformation(busStopData);
+    }
   }
 
   async function handleLatestArrivals(stopId: string): Promise<void> {

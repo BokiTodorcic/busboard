@@ -18,21 +18,28 @@ export async function handlePostcodeRequest(
 
   const allLocalBusStops: LocalBusStopInformation[] =
     await getBusStopsWithinRadius(position.latitude, position.longitude);
-  const orderedLocalBusStops: LocalBusStopInformation[] =
-    orderBusStopData(allLocalBusStops);
-  const closestLocalBusStops: LocalBusStopInformation[] =
-    limitClosestBusStops(orderedLocalBusStops);
 
-  const networkArrivals: StationInformation[] = await Promise.all(
-    closestLocalBusStops.map(async (busStop) => {
-      const arrivals = await handleLatestArrivalsRequest(busStop.naptanId);
-      return arrivals;
-    })
-  );
-  return networkArrivals;
+  if (allLocalBusStops.length === 0) {
+    return [];
+  } else {
+    const orderedLocalBusStops: LocalBusStopInformation[] =
+      orderBusStopData(allLocalBusStops);
+    const closestLocalBusStops: LocalBusStopInformation[] =
+      limitClosestBusStops(orderedLocalBusStops);
+
+    const networkArrivals: StationInformation[] = await Promise.all(
+      closestLocalBusStops.map(async (busStop) => {
+        const arrivals = await handleLatestArrivalsRequest(busStop.naptanId);
+        return arrivals;
+      })
+    );
+    return networkArrivals;
+  }
 }
 
-function orderBusStopData(localBusStops: LocalBusStopInformation[]): LocalBusStopInformation[] {
+function orderBusStopData(
+  localBusStops: LocalBusStopInformation[]
+): LocalBusStopInformation[] {
   return [...localBusStops].sort((a, b) => (a.distance < b.distance ? -1 : 1));
 }
 

@@ -27,6 +27,12 @@ export async function getBusStopsWithinRadius(
     const busStops = response.data.stopPoints;
     return busStops;
   } catch (error) {
-    console.error(error);
+    if (axios.isAxiosError(error)) {
+      console.log(error.status)
+      console.error(error.response);
+    } else {
+      console.error(error);
+    }
+    return []
   }
 }
