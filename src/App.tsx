@@ -9,26 +9,21 @@ function App() {
     StationInformation[]
   >([]);
 
-  async function handleSearch(searchData: FormData): Promise<void> {
-    const query: FormDataEntryValue | null = searchData.get("busstopId");
-    if (typeof query === "string") {
-      const busStopRegex = /[a-z0-9]{9,}/i;
-      const postcodeRegex = /[A-Z]{1,2}[0-9]{1,2}\s?\d[A-Z]{2}/i;
+  async function handleSearch(searchData: string): Promise<void> {
+    const busStopRegex = /[a-z0-9]{9,}/i;
+    const postcodeRegex = /[A-Z]{1,2}[0-9]{1,2}\s?\d[A-Z]{2}/i;
 
-      const isValidBusStop: boolean = busStopRegex.test(query);
-      const isValidPostCode: boolean = postcodeRegex.test(query);
+    const isValidBusStop: boolean = busStopRegex.test(searchData);
+    const isValidPostCode: boolean = postcodeRegex.test(searchData);
 
-      if (isValidBusStop) {
-        await handleLatestArrivals(query);
-      } else if (isValidPostCode) {
-        await handleArrivalsFromPostcode(query);
-      } else {
-        alert(
-          "Attention: Please enter a valid Bus Stop ID or Postcode into the input field."
-        );
-      }
+    if (isValidBusStop) {
+      await handleLatestArrivals(searchData);
+    } else if (isValidPostCode) {
+      await handleArrivalsFromPostcode(searchData);
     } else {
-      alert("Attention: Please enter valid data into the input field.");
+      alert(
+        "Attention: Please enter a valid Bus Stop ID or Postcode into the input field."
+      );
     }
   }
 
@@ -55,7 +50,16 @@ function App() {
       <h1 className="text-3xl font-bold underline text-center text-cyan-600 m-4">
         BusBoard
       </h1>
-      <form action={handleSearch}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const target = e.target as typeof e.target & {
+            busstopId: { value: string };
+          };
+          const stopId = target.busstopId.value;
+          handleSearch(stopId);
+        }}
+      >
         <input
           type="text"
           name="busstopId"
