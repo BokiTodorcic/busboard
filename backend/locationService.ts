@@ -40,7 +40,7 @@ export async function handlePostcodeRequest(
 function orderBusStopData(
   localBusStops: LocalBusStopInformation[]
 ): LocalBusStopInformation[] {
-  return [...localBusStops].sort((a, b) => (a.distance < b.distance ? -1 : 1));
+  return [...localBusStops].sort((a, b) => a.distance - b.distance);
 }
 
 function limitClosestBusStops(

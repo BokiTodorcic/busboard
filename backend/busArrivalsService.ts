@@ -37,9 +37,7 @@ function parseBusData(data: BusArrivalInformation[]): BusArrivalInformation[] {
 function orderBusData(
   arrivalData: BusArrivalInformation[]
 ): BusArrivalInformation[] {
-  return [...arrivalData].sort((a, b) =>
-    a.timeToStation < b.timeToStation ? -1 : 1
-  );
+  return [...arrivalData].sort((a, b) => a.timeToStation - b.timeToStation);
 }
 
 function showFirstBuses(
