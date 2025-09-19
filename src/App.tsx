@@ -50,24 +50,32 @@ function App() {
       <h1 className="text-3xl font-bold underline text-center text-cyan-600 m-4">
         BusBoard
       </h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const target = e.target as typeof e.target & {
-            busstopId: { value: string };
-          };
-          const stopId = target.busstopId.value;
-          handleSearch(stopId);
-        }}
-      >
-        <input
-          type="text"
-          name="busstopId"
-          id="busstopId"
-          placeholder={"Bus Stop ID:"}
-        ></input>
-        <button type="submit">Search</button>
-      </form>
+      <div className="m-4 mt-10 mb-10 ">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const target = e.target as typeof e.target & {
+              busstopId: { value: string };
+            };
+            const stopId = target.busstopId.value;
+            handleSearch(stopId);
+          }}
+        >
+          <label className="text-lg text-cyan-700 mb-2 mr-10 block">Search by Bus Stop or Postcode:</label>
+          <input
+            type="text"
+            name="busstopId"
+            id="busstopId"
+            className="rounded-md p-3 bg-zinc-100"
+          ></input>
+          <button
+            type="submit"
+            className="rounded-md p-3 bg-cyan-600 text-white hover:border-transparent hover:bg-cyan-700 hover:text-white"
+          >
+            Search
+          </button>
+        </form>
+      </div>
       <div>
         {stationInformation.map((station, index: number) => {
           return (

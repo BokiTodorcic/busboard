@@ -26,3 +26,7 @@ export type ArrivalsTableProps = {
   stationInfo: StationInformation;
   key: number;
 };
+
+export type LocalStops = {
+  stopPoints: LocalBusStopInformation[];
+};
