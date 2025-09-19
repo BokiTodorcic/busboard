@@ -21,8 +21,7 @@ export async function handleLatestArrivalsRequest(
 }
 
 function parseBusData(data: BusArrivalInformation[]): BusArrivalInformation[] {
-  const allParsedBuses: BusArrivalInformation[] = [];
-  data.map((bus: BusArrivalInformation) => {
+  return data.map((bus: BusArrivalInformation) => {
     const arrivalInMins: number = Math.ceil(bus.timeToStation / 60);
     const busInformation: BusArrivalInformation = {
       lineName: bus.lineName,
@@ -31,9 +30,8 @@ function parseBusData(data: BusArrivalInformation[]): BusArrivalInformation[] {
       naptanId: bus.naptanId,
       stationName: bus.stationName,
     };
-    allParsedBuses.push(busInformation);
+    return busInformation;
   });
-  return allParsedBuses;
 }
 
 function orderBusData(
