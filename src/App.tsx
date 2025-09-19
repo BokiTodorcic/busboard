@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { handleLatestArrivalsRequest } from "../backend/busArrivalsService";
 import { handlePostcodeRequest } from "../backend/locationService";
-import type { StationInformation } from "./types";
+import type { StationArrivalsResponse, StationInformation } from "./types";
 import ArrivalsTable from "./Table";
+import NoArrivalsTable from "./NoArrivalsTable";
 
 function App() {
   const [stationInformation, setStationInformation] = useState<
@@ -28,13 +29,13 @@ function App() {
   }
 
   async function handleArrivalsFromPostcode(postcode: string): Promise<void> {
-    const busStopData: StationInformation[] = await handlePostcodeRequest(
+    const busStopData: StationArrivalsResponse = await handlePostcodeRequest(
       postcode
     );
-    if (busStopData.length === 0) {
-      alert("No stations available for that postcode.");
+    if (!busStopData.data || !busStopData.success) {
+      alert(`Error: ${busStopData.message}`);
     } else {
-      setStationInformation(busStopData);
+      setStationInformation(busStopData.data);
     }
   }
 
@@ -61,7 +62,9 @@ function App() {
             handleSearch(stopId);
           }}
         >
-          <label className="text-lg text-cyan-700 mb-2 mr-10 block">Search by Bus Stop or Postcode:</label>
+          <label className="text-lg text-cyan-700 mb-2 mr-10 block">
+            Search by Bus Stop or Postcode:
+          </label>
           <input
             type="text"
             name="busstopId"
@@ -78,9 +81,18 @@ function App() {
       </div>
       <div>
         {stationInformation.map((station, index: number) => {
-          return (
-            <ArrivalsTable key={index} stationInfo={station}></ArrivalsTable>
-          );
+          if (!station.noArrivals) {
+            return (
+              <ArrivalsTable key={index} stationInfo={station}></ArrivalsTable>
+            );
+          } else {
+            return (
+              <NoArrivalsTable
+                key={index}
+                stationInfo={station}
+              ></NoArrivalsTable>
+            );
+          }
         })}
       </div>
     </>

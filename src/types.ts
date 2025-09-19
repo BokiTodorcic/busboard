@@ -10,6 +10,7 @@ export type BusArrivalInformation = {
 export type StationInformation = {
   stationName: string;
   arrivalsInfo: BusArrivalInformation[];
+  noArrivals: boolean;
 };
 
 export type Position = {
@@ -29,4 +30,23 @@ export type ArrivalsTableProps = {
 
 export type LocalStops = {
   stopPoints: LocalBusStopInformation[];
+};
+
+export type PostcodeApiResponse = {
+  success: boolean;
+  data?: Position;
+  status?: number;
+  message?: string;
+};
+
+export type TflApiResponse = {
+  success: boolean;
+  stops: LocalBusStopInformation[];
+  message?: string;
+};
+
+export type StationArrivalsResponse = {
+  success: boolean;
+  data?: StationInformation[];
+  message?: string;
 };

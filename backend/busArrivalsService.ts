@@ -7,17 +7,25 @@ export async function handleLatestArrivalsRequest(
   const stationArrivals: StationInformation = {
     stationName: "",
     arrivalsInfo: [],
+    noArrivals: true,
   };
 
   const arrivalsData: BusArrivalInformation[] = await getLatestArrivals(stopId);
-  const parsedArrivals: BusArrivalInformation[] = parseBusData(arrivalsData);
-  const orderedArrivals: BusArrivalInformation[] = orderBusData(parsedArrivals);
-  const latestArrivals: BusArrivalInformation[] =
-    showFirstBuses(orderedArrivals);
+  if (arrivalsData.length === 0) {
+    stationArrivals.stationName = stopId;
+    return stationArrivals;
+  } else {
+    stationArrivals.noArrivals = false;
+    const parsedArrivals: BusArrivalInformation[] = parseBusData(arrivalsData);
+    const orderedArrivals: BusArrivalInformation[] =
+      orderBusData(parsedArrivals);
+    const latestArrivals: BusArrivalInformation[] =
+      showFirstBuses(orderedArrivals);
 
-  stationArrivals.stationName = latestArrivals[0].stationName;
-  stationArrivals.arrivalsInfo = latestArrivals;
-  return stationArrivals;
+    stationArrivals.stationName = latestArrivals[0].stationName;
+    stationArrivals.arrivalsInfo = latestArrivals;
+    return stationArrivals;
+  }
 }
 
 function parseBusData(data: BusArrivalInformation[]): BusArrivalInformation[] {
