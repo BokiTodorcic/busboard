@@ -56,9 +56,9 @@ function App() {
           onSubmit={(e) => {
             e.preventDefault();
             const target = e.target as typeof e.target & {
-              busstopId: { value: string };
+              busStopId: { value: string };
             };
-            const stopId = target.busstopId.value;
+            const stopId = target.busStopId.value;
             handleSearch(stopId);
           }}
         >
@@ -67,8 +67,8 @@ function App() {
           </label>
           <input
             type="text"
-            name="busstopId"
-            id="busstopId"
+            name="busStopId"
+            id="busStopId"
             className="rounded-md p-3 bg-zinc-100"
           ></input>
           <button

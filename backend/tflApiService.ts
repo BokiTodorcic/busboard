@@ -8,13 +8,12 @@ import type {
 const api_key: string | undefined = import.meta.env.VITE_API_KEY;
 
 export async function getLatestArrivals(
-  busstopId: string
+  busStopId: string
 ): Promise<BusArrivalInformation[]> {
   try {
     const response = await axios.get<BusArrivalInformation[]>(
-      `https://api.tfl.gov.uk/StopPoint/${busstopId}/Arrivals?app_key=${api_key}`
+      `https://api.tfl.gov.uk/StopPoint/${busStopId}/Arrivals?app_key=${api_key}`
     );
-    console.log(response);
     const allArrivals: BusArrivalInformation[] = response.data;
     return allArrivals;
   } catch (error) {
