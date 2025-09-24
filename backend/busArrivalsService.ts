@@ -1,36 +1,54 @@
-import { type BusArrivalInformation } from "../src/types";
+import type { BusArrivalInformation, StationInformation } from "../src/types";
 import { getLatestArrivals } from "./tflApiService";
 
-export async function handleLatestArrivalsRequest(stopID: string) {
-  const arrivalsData: BusArrivalInformation[] = await getLatestArrivals(stopID);
-  const parsedArrivals: BusArrivalInformation[] = parseBusData(arrivalsData);
-  const orderedArrivals: BusArrivalInformation[] = orderBusData(parsedArrivals);
-  const latestArrivals: BusArrivalInformation[] =
-    showFirstBusses(orderedArrivals);
-  return latestArrivals;
+export async function handleLatestArrivalsRequest(
+  stopId: string
+): Promise<StationInformation> {
+  const stationArrivals: StationInformation = {
+    stationName: "",
+    arrivalsInfo: [],
+  };
+
+  const arrivalsData: BusArrivalInformation[] = await getLatestArrivals(stopId);
+  if (arrivalsData.length === 0) {
+    stationArrivals.stationName = stopId;
+    return stationArrivals;
+  } else {
+    const parsedArrivals: BusArrivalInformation[] = parseBusData(arrivalsData);
+    const orderedArrivals: BusArrivalInformation[] =
+      orderBusData(parsedArrivals);
+    const latestArrivals: BusArrivalInformation[] =
+      showFirstBuses(orderedArrivals);
+
+    stationArrivals.stationName = latestArrivals[0].stationName;
+    stationArrivals.arrivalsInfo = latestArrivals;
+    return stationArrivals;
+  }
 }
 
-function parseBusData(data: BusArrivalInformation[]) {
-  const allParesedBusses: BusArrivalInformation[] = [];
-  data.map((bus: BusArrivalInformation) => {
+function parseBusData(data: BusArrivalInformation[]): BusArrivalInformation[] {
+  return data.map((bus: BusArrivalInformation) => {
     const arrivalInMins: number = Math.ceil(bus.timeToStation / 60);
     const busInformation: BusArrivalInformation = {
       lineName: bus.lineName,
       destinationName: bus.destinationName,
       timeToStation: arrivalInMins,
+      naptanId: bus.naptanId,
+      stationName: bus.stationName,
     };
-    allParesedBusses.push(busInformation);
+    return busInformation;
   });
-  return allParesedBusses;
 }
 
-function orderBusData(arrivalData: BusArrivalInformation[]) {
-  return [...arrivalData].sort((a, b) =>
-    a.timeToStation < b.timeToStation ? -1 : 1
-  );
+function orderBusData(
+  arrivalData: BusArrivalInformation[]
+): BusArrivalInformation[] {
+  return [...arrivalData].sort((a, b) => a.timeToStation - b.timeToStation);
 }
 
-function showFirstBusses(arrivalData: BusArrivalInformation[]) {
+function showFirstBuses(
+  arrivalData: BusArrivalInformation[]
+): BusArrivalInformation[] {
   const arrivalLimit: number = 5;
   return arrivalData.slice(0, arrivalLimit);
 }
