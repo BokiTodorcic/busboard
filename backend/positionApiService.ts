@@ -1,11 +1,11 @@
 import axios from "axios";
-import type { Position, PostcodeApiResponse } from "../src/types";
+import type { PositionApiReponse, PostcodeApiResponse } from "../src/types";
 
 export async function getLongLatData(
   postcode: string
 ): Promise<PostcodeApiResponse> {
   try {
-    const response = await axios.get<{ result: Position }>(
+    const response = await axios.get<PositionApiReponse>(
       `https://api.postcodes.io/postcodes/${postcode}`
     );
     const res: PostcodeApiResponse = {

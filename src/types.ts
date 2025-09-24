@@ -49,3 +49,9 @@ export type StationArrivalsResponse = {
   data?: StationInformation[];
   message?: string;
 };
+
+export type PositionApiReponse = {
+  status: number;
+  result: Position;
+};
+
