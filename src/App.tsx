@@ -9,6 +9,7 @@ function App() {
   const [stationInformation, setStationInformation] = useState<
     StationInformation[]
   >([]);
+  const [stopId, setStopId] = useState<string>("");
 
   async function handleSearch(searchData: string): Promise<void> {
     const isValidBusStop: boolean = BUS_STOP_REGEX.test(searchData);
@@ -50,12 +51,11 @@ function App() {
       </h1>
       <div className="m-4 mt-10 mb-10 ">
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const target = e.target as typeof e.target & {
-              busStopId: { value: string };
-            };
-            const stopId = target.busStopId.value;
+          onChange={(event: React.ChangeEvent<HTMLFormElement>) => {
+            setStopId(event.target.value);
+          }}
+          onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
             handleSearch(stopId);
           }}
         >
