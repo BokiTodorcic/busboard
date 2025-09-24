@@ -1,12 +1,12 @@
 import type { BusArrivalInformation, ArrivalsTableProps } from "./types";
 
-export default function ArrivalsTable(props: ArrivalsTableProps) {
-  const hasArrivals = props.stationInfo.arrivalsInfo.length > 0;
+export default function ArrivalsTable({stationInfo: stationInfo}: ArrivalsTableProps) {
+  const hasArrivals = stationInfo.arrivalsInfo.length > 0;
 
   return (
     <div className="mb-10">
       <h2 className="text-2xl text-cyan-700 m-4 mb-2">
-        {props.stationInfo.stationName}
+        {stationInfo.stationName}
       </h2>
       <table className="shadow-md w-150 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ml-4">
         <thead className="text-S text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -18,7 +18,7 @@ export default function ArrivalsTable(props: ArrivalsTableProps) {
         </thead>
         <tbody>
           {hasArrivals ? (
-            props.stationInfo.arrivalsInfo.map(
+            stationInfo.arrivalsInfo.map(
               (bus: BusArrivalInformation, index: number) => {
                 return (
                   <tr
