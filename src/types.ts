@@ -10,7 +10,6 @@ export type BusArrivalInformation = {
 export type StationInformation = {
   stationName: string;
   arrivalsInfo: BusArrivalInformation[];
-  noArrivals: boolean;
 };
 
 export type Position = {

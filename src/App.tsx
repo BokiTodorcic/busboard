@@ -81,7 +81,7 @@ function App() {
       </div>
       <div>
         {stationInformation.map((station, index: number) => {
-          if (!station.noArrivals) {
+          if (station.arrivalsInfo.length > 0) {
             return (
               <ArrivalsTable key={index} stationInfo={station}></ArrivalsTable>
             );

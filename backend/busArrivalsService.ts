@@ -7,7 +7,6 @@ export async function handleLatestArrivalsRequest(
   const stationArrivals: StationInformation = {
     stationName: "",
     arrivalsInfo: [],
-    noArrivals: true,
   };
 
   const arrivalsData: BusArrivalInformation[] = await getLatestArrivals(stopId);
@@ -15,7 +14,6 @@ export async function handleLatestArrivalsRequest(
     stationArrivals.stationName = stopId;
     return stationArrivals;
   } else {
-    stationArrivals.noArrivals = false;
     const parsedArrivals: BusArrivalInformation[] = parseBusData(arrivalsData);
     const orderedArrivals: BusArrivalInformation[] =
       orderBusData(parsedArrivals);
