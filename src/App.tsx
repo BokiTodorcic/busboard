@@ -51,9 +51,6 @@ function App() {
       </h1>
       <div className="m-4 mt-10 mb-10 ">
         <form
-          onChange={(event: React.ChangeEvent<HTMLFormElement>) => {
-            setStopId(event.target.value);
-          }}
           onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             handleSearch(stopId);
@@ -67,6 +64,9 @@ function App() {
             name="busStopId"
             id="busStopId"
             className="rounded-md p-3 bg-zinc-100"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setStopId(event.target.value);
+          }}
           ></input>
           <button
             type="submit"
