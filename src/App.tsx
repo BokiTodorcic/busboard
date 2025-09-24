@@ -4,6 +4,7 @@ import { handlePostcodeRequest } from "../backend/locationService";
 import type { StationArrivalsResponse, StationInformation } from "./types";
 import ArrivalsTable from "./Table";
 import NoArrivalsTable from "./NoArrivalsTable";
+import { BUS_STOP_REGEX, POSTCODE_REGEX } from "./constants";
 
 function App() {
   const [stationInformation, setStationInformation] = useState<
@@ -11,11 +12,8 @@ function App() {
   >([]);
 
   async function handleSearch(searchData: string): Promise<void> {
-    const busStopRegex = /[a-z0-9]{9,}/i;
-    const postcodeRegex = /[A-Z]{1,2}[0-9]{1,2}\s?\d[A-Z]{2}/i;
-
-    const isValidBusStop: boolean = busStopRegex.test(searchData);
-    const isValidPostCode: boolean = postcodeRegex.test(searchData);
+    const isValidBusStop: boolean = BUS_STOP_REGEX.test(searchData);
+    const isValidPostCode: boolean = POSTCODE_REGEX.test(searchData);
 
     if (isValidBusStop) {
       await handleLatestArrivals(searchData);
