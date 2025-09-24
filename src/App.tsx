@@ -3,7 +3,6 @@ import { handleLatestArrivalsRequest } from "../backend/busArrivalsService";
 import { handlePostcodeRequest } from "../backend/locationService";
 import type { StationArrivalsResponse, StationInformation } from "./types";
 import ArrivalsTable from "./Table";
-import NoArrivalsTable from "./NoArrivalsTable";
 import { BUS_STOP_REGEX, POSTCODE_REGEX } from "./constants";
 
 function App() {
@@ -79,18 +78,9 @@ function App() {
       </div>
       <div>
         {stationInformation.map((station, index: number) => {
-          if (station.arrivalsInfo.length > 0) {
-            return (
-              <ArrivalsTable key={index} stationInfo={station}></ArrivalsTable>
-            );
-          } else {
-            return (
-              <NoArrivalsTable
-                key={index}
-                stationInfo={station}
-              ></NoArrivalsTable>
-            );
-          }
+          return (
+            <ArrivalsTable key={index} stationInfo={station}></ArrivalsTable>
+          );
         })}
       </div>
     </>
