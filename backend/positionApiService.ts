@@ -23,8 +23,20 @@ export async function getLongLatData(
       };
       console.error(res);
       return res;
+    } else if (error instanceof Error) {
+      const res: PostcodeApiResponse = {
+        success: false,
+        message: error.message,
+      };
+      console.error(res);
+      return res;
     } else {
-      throw new Error((error as Error).message);
+      const res: PostcodeApiResponse = {
+        success: false,
+        message: "Unknown error thrown",
+      };
+      console.error("Unknown error thrown: ", error);
+      return res
     }
   }
 }
